@@ -1,5 +1,3 @@
-import org.jetbrains.kotlin.gradle.plugin.extraProperties
-
 /*
  * Copyright lt 2023
  *
@@ -15,15 +13,59 @@ import org.jetbrains.kotlin.gradle.plugin.extraProperties
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+//需要判断是否是jitpack的构建，如果是jitpack的构建，需要将build目录设置到项目根目录下
+if (System.getenv("JITPACK") == null) {
+    rootProject.layout.buildDirectory.set(file("./build"))
+}
+
 plugins {
     // this is necessary to avoid the plugins to be loaded multiple times
     // in each subproject's classloader
-    kotlin("multiplatform").apply(false)
-    id("com.android.application").apply(false)
-    id("com.android.library").apply(false)
-    id("org.jetbrains.compose").apply(false)
-    id("com.google.devtools.ksp").apply(false)
+    alias(libs.plugins.kotlinMultiplatform).apply(false)
+    alias(libs.plugins.androidApplication).apply(false)
+    alias(libs.plugins.androidLibrary).apply(false)
+    alias(libs.plugins.jetbrainsCompose).apply(false)
+    alias(libs.plugins.ksp).apply(false)
+    alias(libs.plugins.cocoapods).apply(false)
+    alias(libs.plugins.jetbrainsKotlinJvm) apply false
 }
 
+
+val javaVersion = JavaVersion.toVersion(libs.versions.jvmTarget.get())
+check(JavaVersion.current().isCompatibleWith(javaVersion)) {
+    "This project needs to be run with Java ${javaVersion.getMajorVersion()} or higher (found: ${JavaVersion.current()})."
+}
 group = "com.github.ltttttttttttt"
 version = "1.0.0"
+
+subprojects {
+    if (System.getenv("JITPACK") == null) {
+        this.layout.buildDirectory.set(file("${rootProject.layout.buildDirectory.get().asFile.absolutePath}/${project.name}"))
+    }
+    afterEvaluate {
+        if(project.tasks.findByName("testClasses") == null && !project.name.contentEquals("DataStruct")) {
+            try {
+                task("testClasses") {
+                    //https://github.com/robolectric/robolectric/issues/1802#issuecomment-137401530
+                }
+            } catch (e: Exception) {
+                // ignore
+            }
+        }
+    }
+    configurations.all {
+        exclude(group = "org.jetbrains.compose.material", module = "material")
+        resolutionStrategy {
+            eachDependency {
+                if (requested.group == "org.jetbrains.kotlin") {
+                    useVersion(libs.versions.kotlin.get())
+                }else if (requested.group.startsWith("org.jetbrains.compose.")
+                    && !requested.group.endsWith(".compiler")) {
+                    useVersion(libs.versions.compose.plugin.get())
+                }else if (requested.group == "org.jetbrains" && requested.name == "annotations") {
+                    useVersion(libs.versions.annotations.get())
+                }
+            }
+        }
+    }
+}

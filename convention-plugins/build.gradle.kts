@@ -14,10 +14,28 @@
  * limitations under the License.
  */
 
-plugins {
-    `kotlin-dsl` // Is needed to turn our build logic written in Kotlin into the Gradle Plugin
+//需要判断是否是jitpack的构建，如果是jitpack的构建，需要将build目录设置到项目根目录下
+if (System.getenv("JITPACK") == null) {
+    val buildDir = rootProject.rootDir.parentFile.resolve("./build/${project.name}")
+    rootProject.layout.buildDirectory.set(buildDir)
 }
 
-repositories {
-    gradlePluginPortal() // To use 'maven-publish' and 'signing' plugins in our own plugin
+plugins {
+    `kotlin-dsl`
+}
+subprojects {
+    if (System.getenv("JITPACK") == null) {
+        this.layout.buildDirectory.set(file("${rootProject.layout.buildDirectory.get().asFile.absolutePath}/${project.name}"))
+    }
+    configurations.all {
+        resolutionStrategy {
+            eachDependency {
+                if (requested.group == "org.jetbrains.kotlin") {
+                    useVersion(libs.versions.kotlin.get())
+                } else if (requested.group == "org.jetbrains" && requested.name == "annotations") {
+                    useVersion(libs.versions.annotations.get())
+                }
+            }
+        }
+    }
 }

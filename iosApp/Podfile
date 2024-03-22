@@ -1,5 +1,6 @@
+source 'https://cdn.cocoapods.org'
 target 'iosApp' do
   use_frameworks!
   platform :ios, '14.1'
-  pod 'ios_shared', :path => '../ios_shared'
+  pod 'sample', :path => '../sample'
 end
