@@ -21,18 +21,16 @@ import java.util.Properties
 rootProject.name = "ComposeViews"
 enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 
-include(":CompViews")
-
-//includeBuild("convention-plugins")
+include(":compviews")
 
 
 include(":commonApp")
 include(":sample")
 
-include(":DataStructure")
-project(":DataStructure").projectDir = file("/Volumes/Extra/Github/DataStructure")
+include(":KMMDataStructure")
+project(":KMMDataStructure").projectDir = file("/Volumes/Extra/Github/KMMDataStructure")
 
-include(":DataStructure:DataStruct")
+include(":KMMDataStructure:datastructure")
 
 //project(":ComposeViews").apply { // versionCatalogs 中无法使用与父项目同名的模块名,会生成子项目的名称(projects.ComposeViews),这样会造成冲突
 //    this.name = "CompViews"  //重命名还是有点问题, implementation(projects.ComposeViews)会无法正确加载依赖项目

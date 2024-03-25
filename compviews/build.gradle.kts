@@ -60,10 +60,10 @@ kotlin {
     }
     @OptIn(ExperimentalWasmDsl::class)
     wasmJs {
-        moduleName = "composeApp"
+        moduleName = "compviews"
         browser {
             commonWebpackConfig {
-                outputFileName = "composeApp.js"
+                outputFileName = "compviews.js"
                 devServer = (devServer ?: KotlinWebpackConfig.DevServer()).apply {
                     static = (static ?: mutableListOf()).apply {
                         // Serve sources to debug inside browser
@@ -106,7 +106,7 @@ kotlin {
             api(compose.material3)
             api(compose.animation)
             api(compose.ui)
-            api(projects.dataStructure.dataStruct)
+            api(projects.kmmDataStructure.datastructure)
         }
 
         androidMain.dependencies {
@@ -164,7 +164,7 @@ buildscript {
 ////mavenCentral后台: https://s01.oss.sonatype.org/#stagingRepositories
 //version = "${libs.versions.compose.plugin.get()}.beta1"
 
-group = "com.vickyleu.composeviews"
+group = "com.vickyleu.compviews"
 version = "1.0.0"
 
 tasks.withType<PublishToMavenRepository> {
@@ -190,15 +190,15 @@ val javadocJar by tasks.registering(Jar::class) {
 tasks.dokkaHtml {
     // outputDirectory = layout.buildDirectory.get().resolve("dokka")
     offlineMode = false
-    moduleName = "composeviews"
+    moduleName = "compviews"
 
     // See the buildscript block above and also
     // https://github.com/Kotlin/dokka/issues/2406
-    pluginConfiguration<DokkaBase, DokkaBaseConfiguration> {
-//        customAssets = listOf(file("../asset/logo-icon.svg"))
-//        customStyleSheets = listOf(file("../asset/logo-styles.css"))
-        separateInheritedMembers = true
-    }
+//    pluginConfiguration<DokkaBase, DokkaBaseConfiguration> {
+////        customAssets = listOf(file("../asset/logo-icon.svg"))
+////        customStyleSheets = listOf(file("../asset/logo-styles.css"))
+//        separateInheritedMembers = true
+//    }
 
     dokkaSourceSets {
         configureEach {
@@ -273,10 +273,10 @@ publishing {
             }
             developers {
                 developer {
-                    id = "kevinnzou"
-                    name = "kevinnzou"
+                    id = "ltttttttttttt"
+                    name = "ltttttttttttt"
                     email = ""
-                    roles = listOf("Netease Mobile Developer")
+                    roles = listOf("Mobile Developer")
                     timezone = "GMT+8"
                 }
             }

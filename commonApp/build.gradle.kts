@@ -89,7 +89,7 @@ kotlin {
         commonMain.get().apply {
             kotlin.srcDir("${project.layout.buildDirectory.get().asFile.relativeTo(projectDir)}/generated/ksp/metadata/commonMain/kotlin")
             dependencies {
-                api(projects.compViews)
+                api(projects.compviews)
                 implementation(project.dependencies.platform(libs.compose.bom))
                 implementation(project.dependencies.platform(libs.coroutines.bom))
                 implementation(project.dependencies.platform(libs.kotlin.bom))

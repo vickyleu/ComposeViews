@@ -43,7 +43,8 @@ subprojects {
         this.layout.buildDirectory.set(file("${rootProject.layout.buildDirectory.get().asFile.absolutePath}/${project.name}"))
     }
     afterEvaluate {
-        if(project.tasks.findByName("testClasses") == null && !project.name.contentEquals("DataStruct")) {
+        if(project.tasks.findByName("testClasses") == null && !project.name.toLowerCase()
+            .contentEquals("datastructure")) {
             try {
                 task("testClasses") {
                     //https://github.com/robolectric/robolectric/issues/1802#issuecomment-137401530
