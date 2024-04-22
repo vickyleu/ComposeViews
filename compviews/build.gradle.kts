@@ -1,7 +1,10 @@
+@file:Suppress("OPT_IN_USAGE")
+
 import org.gradle.nativeplatform.platform.internal.DefaultNativePlatform
 import org.jetbrains.dokka.base.DokkaBase
 import org.jetbrains.dokka.base.DokkaBaseConfiguration
 import org.jetbrains.dokka.gradle.DokkaTask
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.targets.js.dsl.ExperimentalWasmDsl
 import org.jetbrains.kotlin.gradle.targets.js.webpack.KotlinWebpackConfig
 import java.util.Properties
@@ -33,8 +36,18 @@ plugins {
 }
 
 
-
+tasks
+    .withType<org.jetbrains.kotlin.gradle.tasks.KotlinJvmCompile>()
+    .configureEach {
+        compilerOptions
+            .jvmTarget
+            .set(JvmTarget.fromTarget(libs.versions.jvmTarget.get()))
+    }
 kotlin {
+    compilerOptions {
+        freeCompilerArgs.add("-Xexpect-actual-classes")
+    }
+
     androidTarget {
         publishLibraryVariants("debug", "release")
     }
@@ -42,9 +55,6 @@ kotlin {
     jvm("desktop") {
         compilations.all {
             defaultSourceSet.resources.srcDir("resources")
-            kotlinOptions {
-                jvmTarget = libs.versions.jvmTarget.get()
-            }
         }
     }
 
@@ -165,7 +175,8 @@ buildscript {
 //version = "${libs.versions.compose.plugin.get()}.beta1"
 
 group = "com.vickyleu.compviews"
-version = "1.0.0"
+version = "1.0.1"
+
 
 tasks.withType<PublishToMavenRepository> {
     val isMac = DefaultNativePlatform.getCurrentOperatingSystem().isMacOsX
