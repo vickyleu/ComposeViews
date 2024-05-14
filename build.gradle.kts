@@ -28,6 +28,7 @@ plugins {
     alias(libs.plugins.ksp).apply(false)
     alias(libs.plugins.cocoapods).apply(false)
     alias(libs.plugins.jetbrainsKotlinJvm) apply false
+    alias(libs.plugins.compose.compiler) apply false
 }
 
 
@@ -38,21 +39,13 @@ check(JavaVersion.current().isCompatibleWith(javaVersion)) {
 group = "com.github.ltttttttttttt"
 version = "1.0.0"
 
+allprojects {
+    tasks.register("testClasses")
+}
+
 subprojects {
     if (System.getenv("JITPACK") == null) {
         this.layout.buildDirectory.set(file("${rootProject.layout.buildDirectory.get().asFile.absolutePath}/${project.name}"))
-    }
-    afterEvaluate {
-        if(project.tasks.findByName("testClasses") == null && !project.name.toLowerCase()
-            .contentEquals("datastructure")) {
-            try {
-                task("testClasses") {
-                    //https://github.com/robolectric/robolectric/issues/1802#issuecomment-137401530
-                }
-            } catch (e: Exception) {
-                // ignore
-            }
-        }
     }
     configurations.all {
         exclude(group = "org.jetbrains.compose.material", module = "material")

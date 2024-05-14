@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ Copyright lt 2023
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,8 +15,10 @@
   -->
 
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.lt.compose_views">
 
-    <uses-permission android:name="android.permission.INTERNET"/>
+    <application tools:overrideLibrary="com.lt.data_structure" />
+    <uses-permission android:name="android.permission.INTERNET" />
 
 </manifest>

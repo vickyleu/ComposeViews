@@ -31,6 +31,7 @@ plugins {
     alias(libs.plugins.jetbrainsCompose)
     alias(libs.plugins.androidLibrary)
     alias(libs.plugins.dokka)
+    alias(libs.plugins.compose.compiler)
     id("maven-publish")
 //    id("convention.publication")
 }
@@ -145,10 +146,10 @@ kotlin {
 }
 
 android {
-    compileSdk = 34
+    compileSdk = libs.versions.android.compileSdk.get().toInt()
     namespace = "com.lt.compose_views"
     defaultConfig {
-        minSdk = 21
+        minSdk = libs.versions.android.minSdk.get().toInt()
         sourceSets["main"].manifest.srcFile("src/main/AndroidManifest.xml")
         sourceSets["main"].res.srcDir("resources")
 
@@ -175,7 +176,7 @@ buildscript {
 //version = "${libs.versions.compose.plugin.get()}.beta1"
 
 group = "com.vickyleu.compviews"
-version = "1.0.1"
+version = "1.0.2"
 
 
 tasks.withType<PublishToMavenRepository> {

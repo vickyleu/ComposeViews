@@ -218,6 +218,7 @@ fun TextPagerIndicator(
     val dp20 = remember(density) {
         density.run { 20.dp.toPx() }
     }
+    @Suppress("DEPRECATION")
     TextPagerIndicator(
         texts = texts,
         offsetPercentWithSelect = offsetPercentWithSelect,
@@ -283,6 +284,7 @@ fun TextPagerIndicator(
     val selectFontPx by remember(selectFontSize) {
         mutableStateOf(density.run { selectFontSize.toPx() })
     }
+    @Suppress("DEPRECATION")
     PagerIndicator(
         size = texts.size,
         offsetPercentWithSelect = offsetPercentWithSelect,

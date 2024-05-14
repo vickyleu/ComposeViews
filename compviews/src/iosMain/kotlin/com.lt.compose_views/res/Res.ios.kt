@@ -20,7 +20,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.graphics.painter.Painter
 import org.jetbrains.compose.resources.DrawableResource
-import org.jetbrains.compose.resources.ExperimentalResourceApi
+import org.jetbrains.compose.resources.InternalResourceApi
 import org.jetbrains.compose.resources.painterResource
 
 /**
@@ -32,7 +32,12 @@ import org.jetbrains.compose.resources.painterResource
 private const val IMG_FILE_BEGIN = "drawable-xxhdpi/"
 private const val IMG_FILE_ENDING = ".webp"
 
-@OptIn(ExperimentalResourceApi::class)
+@OptIn(InternalResourceApi::class)
 @Composable
 internal actual fun resourcePainter(name: String): Painter =
-    painterResource(remember(name) { DrawableResource(IMG_FILE_BEGIN + name + IMG_FILE_ENDING) })
+    painterResource(remember(name) {
+        DrawableResource(
+            IMG_FILE_BEGIN + name + IMG_FILE_ENDING,
+            setOf()
+        )
+    })

@@ -11,8 +11,18 @@ plugins {
     alias(libs.plugins.jetbrainsCompose)
 
     alias(libs.plugins.cocoapods)
+
+    alias(libs.plugins.compose.compiler)
 }
 kotlin {
+    @Suppress("OPT_IN_USAGE")
+    compilerOptions {
+        freeCompilerArgs = listOf(
+            "-Xexpect-actual-classes", // remove warnings for expect classes
+            "-Xskip-prerelease-check",
+            "-opt-in=kotlinx.cinterop.ExperimentalForeignApi",
+        )
+    }
     jvmToolchain {
         languageVersion.set(JavaLanguageVersion.of(libs.versions.jvmTarget.get()))
     }

@@ -21,6 +21,7 @@ plugins {
     alias(libs.plugins.jetbrainsCompose)
     alias(libs.plugins.ksp)
     alias(libs.plugins.cocoapods)
+    alias(libs.plugins.compose.compiler)
 }
 
 group = "com.lt.ltttttttttttt"
@@ -51,6 +52,14 @@ android {
 }
 
 kotlin {
+    @Suppress("OPT_IN_USAGE")
+    compilerOptions {
+        freeCompilerArgs = listOf(
+            "-Xexpect-actual-classes", // remove warnings for expect classes
+            "-Xskip-prerelease-check",
+            "-opt-in=kotlinx.cinterop.ExperimentalForeignApi",
+        )
+    }
     androidTarget {
         compilations.all {
             kotlinOptions {
