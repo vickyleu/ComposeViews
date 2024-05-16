@@ -14,6 +14,11 @@ plugins {
 
     alias(libs.plugins.compose.compiler)
 }
+
+compose {
+    kotlinCompilerPlugin = "org.jetbrains.kotlin:kotlin-compose-compiler-plugin-embeddable:${libs.versions.kotlin.get()}"
+}
+
 kotlin {
     @Suppress("OPT_IN_USAGE")
     compilerOptions {

@@ -25,7 +25,9 @@ plugins {
 }
 
 group = "com.lt.ltttttttttttt"
-
+compose {
+    kotlinCompilerPlugin = "org.jetbrains.kotlin:kotlin-compose-compiler-plugin-embeddable:${libs.versions.kotlin.get()}"
+}
 android {
     compileSdk = libs.versions.android.compileSdk.get().toInt()
     buildFeatures.buildConfig = true

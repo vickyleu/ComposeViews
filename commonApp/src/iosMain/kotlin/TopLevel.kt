@@ -37,7 +37,7 @@ actual fun rememberPainter(data: String?): Painter {
 /**
  * 根据图片文件名加载图片
  */
-@OptIn(InternalResourceApi::class)
+@OptIn(InternalResourceApi::class, ExperimentalResourceApi::class)
 @Composable
 actual fun resourcePainter(imageName: String): Painter {
     return painterResource(remember(imageName) { DrawableResource(IMG_FILE_BEGIN + imageName + IMG_FILE_ENDING,

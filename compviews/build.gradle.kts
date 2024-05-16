@@ -1,5 +1,6 @@
 @file:Suppress("OPT_IN_USAGE")
 
+import com.android.tools.r8.internal.ar
 import org.gradle.nativeplatform.platform.internal.DefaultNativePlatform
 import org.jetbrains.dokka.base.DokkaBase
 import org.jetbrains.dokka.base.DokkaBaseConfiguration
@@ -44,13 +45,19 @@ tasks
             .jvmTarget
             .set(JvmTarget.fromTarget(libs.versions.jvmTarget.get()))
     }
+
+compose {
+    kotlinCompilerPlugin =
+        "org.jetbrains.kotlin:kotlin-compose-compiler-plugin-embeddable:${libs.versions.kotlin.get()}"
+}
+
 kotlin {
     compilerOptions {
         freeCompilerArgs.add("-Xexpect-actual-classes")
     }
 
     androidTarget {
-        publishLibraryVariants("debug", "release")
+        publishLibraryVariants("release")
     }
 
     jvm("desktop") {
@@ -155,6 +162,12 @@ android {
 
         consumerProguardFiles("consumer-rules.pro")
     }
+    publishing {
+        singleVariant("release") {
+            withSourcesJar()
+            withJavadocJar()
+        }
+    }
     compileOptions {
         sourceCompatibility = JavaVersion.toVersion(libs.versions.jvmTarget.get())
         targetCompatibility = JavaVersion.toVersion(libs.versions.jvmTarget.get())
@@ -175,9 +188,8 @@ buildscript {
 ////mavenCentral后台: https://s01.oss.sonatype.org/#stagingRepositories
 //version = "${libs.versions.compose.plugin.get()}.beta1"
 
-group = "com.vickyleu.compviews"
+group = "com.vickyleu.${rootProject.name.lowercase()}"
 version = "1.0.2"
-
 
 tasks.withType<PublishToMavenRepository> {
     val isMac = DefaultNativePlatform.getCurrentOperatingSystem().isMacOsX
@@ -196,14 +208,14 @@ tasks.withType<PublishToMavenRepository> {
 val javadocJar by tasks.registering(Jar::class) {
     dependsOn(tasks.dokkaHtml)
     from(tasks.dokkaHtml.flatMap(DokkaTask::outputDirectory))
+
     archiveClassifier = "javadoc"
 }
 
 tasks.dokkaHtml {
     // outputDirectory = layout.buildDirectory.get().resolve("dokka")
     offlineMode = false
-    moduleName = "compviews"
-
+    moduleName = rootProject.name.lowercase()
     // See the buildscript block above and also
     // https://github.com/Kotlin/dokka/issues/2406
 //    pluginConfiguration<DokkaBase, DokkaBaseConfiguration> {
@@ -268,49 +280,55 @@ publishing {
             }
         }
     }
-    publications.withType<MavenPublication> {
-        artifact(javadocJar) // Required a workaround. See below
-        pom {
-            url = "https://github.com/vickyleu/${projectName}"
-            name = projectName
-            description = """
+
+    afterEvaluate {
+        publications.withType<MavenPublication> {
+            artifact(javadocJar) // Required a workaround. See below
+            artifactId = artifactId.replace(project.name, rootProject.name.lowercase())
+            suppressAllPomMetadataWarnings()
+            pom {
+                url = "https://github.com/vickyleu/${projectName}"
+                name = projectName
+                description = """
                 Visit the project on GitHub to learn more.
             """.trimIndent()
-            inceptionYear = "2024"
-            licenses {
-                license {
-                    name = "Apache-2.0 License"
-                    url = "http://www.apache.org/licenses/LICENSE-2.0.txt"
+                inceptionYear = "2024"
+                licenses {
+                    license {
+                        name = "Apache-2.0 License"
+                        url = "http://www.apache.org/licenses/LICENSE-2.0.txt"
+                    }
                 }
-            }
-            developers {
-                developer {
-                    id = "ltttttttttttt"
-                    name = "ltttttttttttt"
-                    email = ""
-                    roles = listOf("Mobile Developer")
-                    timezone = "GMT+8"
+                developers {
+                    developer {
+                        id = "ltttttttttttt"
+                        name = "ltttttttttttt"
+                        email = ""
+                        roles = listOf("Mobile Developer")
+                        timezone = "GMT+8"
+                    }
                 }
-            }
-            contributors {
-                // contributor {}
-            }
-            scm {
-                tag = "HEAD"
-                url = "https://github.com/vickyleu/${projectName}"
-                connection = "scm:git:github.com/vickyleu/${projectName}.git"
-                developerConnection = "scm:git:ssh://github.com/vickyleu/${projectName}.git"
-            }
-            issueManagement {
-                system = "GitHub"
-                url = "https://github.com/vickyleu/${projectName}/issues"
-            }
-            ciManagement {
-                system = "GitHub Actions"
-                url = "https://github.com/vickyleu/${projectName}/actions"
+                contributors {
+                    // contributor {}
+                }
+                scm {
+                    tag = "HEAD"
+                    url = "https://github.com/vickyleu/${projectName}"
+                    connection = "scm:git:github.com/vickyleu/${projectName}.git"
+                    developerConnection = "scm:git:ssh://github.com/vickyleu/${projectName}.git"
+                }
+                issueManagement {
+                    system = "GitHub"
+                    url = "https://github.com/vickyleu/${projectName}/issues"
+                }
+                ciManagement {
+                    system = "GitHub Actions"
+                    url = "https://github.com/vickyleu/${projectName}/actions"
+                }
             }
         }
     }
+
 }
 
 // TODO: Remove after https://youtrack.jetbrains.com/issue/KT-46466 is fixed
