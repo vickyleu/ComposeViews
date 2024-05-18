@@ -16,7 +16,7 @@ jvmTarget = "17"
 annotations = "23.0.0"
 
 jetpack-compose-bom = "2024.05.00"
-coroutines-bom = "1.8.0"
+coroutines-bom = "1.8.1"
 dokka = "1.9.20"
 compose-plugin = "1.6.10-rc03"
 kotlin = "2.0.0-RC3"

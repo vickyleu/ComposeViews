@@ -28,7 +28,9 @@ include(":commonApp")
 include(":sample")
 
 include(":KMMDataStructure")
-project(":KMMDataStructure").projectDir = file("/Volumes/Extra/Github/KMMDataStructure")
+project(":KMMDataStructure").projectDir = file("../KMMDataStructure").apply{
+    println("KMMDataStructure: ${this.absolutePath}")
+}
 
 include(":KMMDataStructure:datastructure")
 
