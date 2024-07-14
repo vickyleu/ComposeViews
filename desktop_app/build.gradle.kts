@@ -23,7 +23,7 @@ plugins {
 }
 
 group = "com.github.ltttttttttttt"
-
+version = "1.0.2"
 kotlin {
     jvm("desktop") {
         compilations.all {

@@ -23,7 +23,6 @@ import androidx.compose.foundation.layout.RowScope
 import androidx.compose.material.*
 import androidx.compose.material.ripple.LocalRippleTheme
 import androidx.compose.material.ripple.RippleAlpha
-import androidx.compose.material.ripple.RippleTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.remember
@@ -37,6 +36,7 @@ import androidx.compose.ui.graphics.Shape
  *          Button without click effect
  * warning:
  */
+/*
 @Composable
 fun ButtonWithNotRipple(
     onClick: () -> Unit,
@@ -73,4 +73,4 @@ private object NotRippleTheme : RippleTheme {
 
     @Composable
     override fun rippleAlpha(): RippleAlpha = RippleAlpha(0f, 0f, 0f, 0f)
-}
+}*/

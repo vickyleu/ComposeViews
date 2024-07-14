@@ -45,11 +45,12 @@ if (vkomposeIsCheck)
 
         sourceInformationClean = true
     }
-
-group = "io.github.ltttttttttttt"
+group = "com.vickyleu.composeviews"
+//group = "io.github.ltttttttttttt"
 //上传到mavenCentral命令: ./gradlew publishAllPublicationsToSonatypeRepository
 //mavenCentral后台: https://s01.oss.sonatype.org/#stagingRepositories
-version = "$composeVersion.1"
+//version = "$composeVersion.1"
+version = "1.0.2"
 
 kotlin {
     androidTarget {
@@ -192,6 +193,8 @@ kotlin {
 
 android {
     compileSdk = 33
+    namespace = "com.lt.compose_views"
+    buildFeatures.buildConfig = true
     defaultConfig {
         minSdk = 21
         targetSdk = 31
@@ -200,12 +203,16 @@ android {
         consumerProguardFiles("consumer-rules.pro")
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
 }
 
 //compose配置
 compose {
+    resources{
+        publicResClass = false
+        packageOfResClass="io.github.ltttttttttttt.composeviews.generated.resources"
+    }
     //kotlinCompilerPlugin.set("androidx.compose.compiler:compiler:$composeCompilerVersion")
 }

@@ -46,10 +46,13 @@ if (vkomposeIsCheck)
         sourceInformationClean = true
     }
 
-group = "com.lt.ltttttttttttt"
-
+group = "com.vickyleu.composeviews"
+//group = "com.lt.ltttttttttttt"
+version = "1.0.2"
 android {
     compileSdk = 33
+    namespace = "com.lt.common_app"
+    buildFeatures.buildConfig = true
     defaultConfig {
         minSdk = 21
         targetSdk = 31
@@ -62,8 +65,8 @@ android {
         buildConfigField("int", "TEST_INDEX", testIndex)
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
     lint {
         checkDependencies = true//开启 lint 性能优化
@@ -71,7 +74,12 @@ android {
         checkReleaseBuilds = false//压制警告,打包的时候有时候会有莫名其妙的警告
     }
 }
-
+compose {
+    resources{
+        publicResClass = false
+        packageOfResClass="io.github.ltttttttttttt.composeviews.generated.resources"
+    }
+}
 kotlin {
     androidTarget {
         compilations.all {
