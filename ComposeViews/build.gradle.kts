@@ -1,3 +1,7 @@
+@file:OptIn(ExperimentalKotlinGradlePluginApi::class)
+
+import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.targets.js.dsl.ExperimentalWasmDsl
 import org.jetbrains.kotlin.gradle.targets.js.webpack.KotlinWebpackConfig
 
@@ -53,15 +57,15 @@ group = "com.vickyleu.composeviews"
 version = "1.0.2"
 
 kotlin {
+    applyDefaultHierarchyTemplate()
+
     androidTarget {
-        publishLibraryVariants("debug", "release")
+        publishLibraryVariants("release")
     }
 
     jvm("desktop") {
-        compilations.all {
-            kotlinOptions {
-                jvmTarget = "11"
-            }
+        compilerOptions{
+            jvmTarget.set(JvmTarget.fromTarget("17"))
         }
     }
 
@@ -152,55 +156,27 @@ kotlin {
                 api("org.jetbrains.kotlinx:kotlinx-coroutines-swing:$coroutinesVersion")
             }
         }
-        val desktopTest by getting
-
-        val iosMain by creating {
-            dependencies {
-                dependsOn(commonMain)
-            }
-        }
-        val iosTest by creating
-        val iosSimulatorArm64Main by getting {
-            dependsOn(iosMain)
-        }
-        val iosSimulatorArm64Test by getting {
-            dependsOn(iosTest)
-        }
-        val iosArm64Main by getting {
-            dependsOn(iosMain)
-        }
-        val iosArm64Test by getting {
-            dependsOn(iosTest)
-        }
-        val iosX64Main by getting {
-            dependsOn(iosMain)
-        }
-        val iosX64Test by getting {
-            dependsOn(iosTest)
-        }
-
-        val jsMain by getting {
-            dependencies {
-            }
-        }
-
-        val wasmJsMain by getting {
-            dependencies {
-            }
-        }
     }
 }
 
 android {
-    compileSdk = 33
+    compileSdk = 34
     namespace = "com.lt.compose_views"
     buildFeatures.buildConfig = true
     defaultConfig {
         minSdk = 21
-        targetSdk = 31
         sourceSets["main"].manifest.srcFile("src/main/AndroidManifest.xml")
-
         consumerProguardFiles("consumer-rules.pro")
+    }
+    lint{
+        targetSdk = 31
+    }
+
+    publishing {
+        singleVariant("release"){
+            withJavadocJar()
+            withSourcesJar()
+        }
     }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17

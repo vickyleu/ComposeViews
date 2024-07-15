@@ -93,37 +93,38 @@ publishing {
 //            }
 //        }
     }
-
     // Configure all publications
-    publications.withType<MavenPublication> {
-        // Stub javadoc.jar artifact
-        artifact(javadocJar.get())
-        groupId = "com.vickyleu.composeviews"
-        version = "1.0.2"
+    afterEvaluate { //第一次计算只能获得到kotlin multiplatform plugin的发布
+        afterEvaluate{ // 第二次计算才能获得到Android的发布,所以这里要写两次
+            publications.withType<MavenPublication> {
+                // Stub javadoc.jar artifact
+                artifact(javadocJar.get())
+                groupId = "com.vickyleu.composeviews"
+                version = "1.0.2"
+                artifactId = artifactId.lowercase()
+                // Provide artifacts information requited by Maven Central
+                pom {
+                    name.set("ComposeViews")
+                    description.set("Jetpack(JetBrains) Compose views")
+                    url.set("https://github.com/vickyleu/ComposeViews")
 
-        artifactId = artifactId.lowercase()
-
-        // Provide artifacts information requited by Maven Central
-        pom {
-            name.set("ComposeViews")
-            description.set("Jatpack(JetBrains) Compose views")
-            url.set("https://github.com/vickyleu/ComposeViews")
-
-            licenses {
-                license {
-                    name.set("Apache License 2.0")
-                    url.set("http://www.apache.org/licenses/")
+                    licenses {
+                        license {
+                            name.set("Apache License 2.0")
+                            url.set("http://www.apache.org/licenses/")
+                        }
+                    }
+                    developers {
+                        developer {
+                            id.set("ltttttttttttt")
+                            name.set("lt")
+                            email.set("lt.dygzs@qq.com")
+                        }
+                    }
+                    scm {
+                        url.set("https://github.com/vickyleu/ComposeViews")
+                    }
                 }
-            }
-            developers {
-                developer {
-                    id.set("ltttttttttttt")
-                    name.set("lt")
-                    email.set("lt.dygzs@qq.com")
-                }
-            }
-            scm {
-                url.set("https://github.com/vickyleu/ComposeViews")
             }
         }
     }

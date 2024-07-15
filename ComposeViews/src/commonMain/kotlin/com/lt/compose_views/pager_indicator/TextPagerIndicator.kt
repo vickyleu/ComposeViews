@@ -202,6 +202,7 @@ fun TextPagerIndicator(
 
 @Deprecated("Need to use another function with the same name for higher performance")
 @Composable
+@Suppress("DEPRECATION")
 fun TextPagerIndicator(
     texts: List<String>,
     offsetPercentWithSelectFlow: Flow<Float>,
@@ -266,6 +267,7 @@ fun TextPagerIndicator(
 @Deprecated("Need to use another function with the same name for higher performance")
 //[selectIndicatorItem] 被选中的指示器
 @Composable
+@Suppress("DEPRECATION")
 fun TextPagerIndicator(
     texts: List<String>,
     offsetPercentWithSelectFlow: Flow<Float>,

@@ -23,7 +23,6 @@ plugins {
 
 android {
     compileSdk = 34
-    buildToolsVersion = "30.0.3"
     namespace = "com.lt.test_compose"
     buildFeatures.buildConfig = true
     defaultConfig {

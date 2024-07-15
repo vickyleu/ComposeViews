@@ -74,6 +74,7 @@ fun ValuesSelector(
 @Deprecated("Need to use another function with the same name for higher performance")
 @ExperimentalFoundationApi
 @Composable
+@Suppress("DEPRECATION")
 fun ValuesSelector(
     valuesList: List<ArrayList<String>>,
     states: List<ValueSelectState>,

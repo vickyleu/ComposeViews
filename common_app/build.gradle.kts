@@ -1,3 +1,7 @@
+@file:OptIn(ExperimentalKotlinGradlePluginApi::class)
+
+import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.targets.js.dsl.ExperimentalWasmDsl
 import org.jetbrains.kotlin.gradle.targets.js.webpack.KotlinWebpackConfig
 
@@ -55,12 +59,10 @@ android {
     buildFeatures.buildConfig = true
     defaultConfig {
         minSdk = 21
-        targetSdk = 31
-
         var testIndex = "-1"
         try {
             testIndex = File(project.rootDir, "test_index.txt").readText()
-        } catch (e: Exception) {
+        } catch (ignore: Exception) {
         }
         buildConfigField("int", "TEST_INDEX", testIndex)
     }
@@ -69,6 +71,7 @@ android {
         targetCompatibility = JavaVersion.VERSION_17
     }
     lint {
+        targetSdk = 31
         checkDependencies = true//开启 lint 性能优化
         abortOnError = false//忽略Lint检查
         checkReleaseBuilds = false//压制警告,打包的时候有时候会有莫名其妙的警告
@@ -81,19 +84,17 @@ compose {
     }
 }
 kotlin {
+    applyDefaultHierarchyTemplate()
+
     androidTarget {
-        compilations.all {
-            kotlinOptions {
-                jvmTarget = "11"
-            }
+        compilerOptions{
+            jvmTarget.set(JvmTarget.fromTarget("17"))
         }
     }
 
     jvm("desktop") {
-        compilations.all {
-            kotlinOptions {
-                jvmTarget = "11"
-            }
+        compilerOptions{
+            jvmTarget.set(JvmTarget.fromTarget("17"))
         }
     }
 
@@ -199,34 +200,12 @@ kotlin {
                 api("io.coil-kt.coil3:coil-network-ktor:$coilVersion")//图片网络请求引擎
             }
         }
-        val desktopTest by getting
-
-        val iosMain by creating {
+        val iosMain by getting {
             kotlin.srcDir("build/generated/ksp/ios/iosMain/kotlin")
             dependencies {
-                dependsOn(commonMain)
                 api("io.coil-kt.coil3:coil-compose:$coilVersion")//coil图片加载
                 api("io.coil-kt.coil3:coil-network-ktor:$coilVersion")//图片网络请求引擎
             }
-        }
-        val iosTest by creating
-        val iosSimulatorArm64Main by getting {
-            dependsOn(iosMain)
-        }
-        val iosSimulatorArm64Test by getting {
-            dependsOn(iosTest)
-        }
-        val iosArm64Main by getting {
-            dependsOn(iosMain)
-        }
-        val iosArm64Test by getting {
-            dependsOn(iosTest)
-        }
-        val iosX64Main by getting {
-            dependsOn(iosMain)
-        }
-        val iosX64Test by getting {
-            dependsOn(iosTest)
         }
 
         val jsMain by getting {
@@ -235,21 +214,6 @@ kotlin {
                 api("io.coil-kt.coil3:coil-network-ktor:$coilVersion")//图片网络请求引擎
             }
         }
-
-        val wasmJsMain by getting {
-            dependencies {
-            }
-        }
-
-//        val macosMain by creating {
-//            dependsOn(commonMain)
-//        }
-//        val macosX64Main by getting {
-//            dependsOn(macosMain)
-//        }
-//        val macosArm64Main by getting {
-//            dependsOn(macosMain)
-//        }
     }
     ksp {
         arg("packageListWithVirtualReflection", "com.lt.common_app")
