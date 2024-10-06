@@ -39,6 +39,28 @@ allprojects {
 }
 
 
+subprojects{
+    configurations.all {
+        resolutionStrategy {
+            eachDependency { // # 移除掉版本不相同的依赖,保留项目中使用的版本,加快下载速度,也避免乱七八糟的问题
+               if (requested.group == "org.jetbrains.kotlin") {
+                    useVersion(libs.versions.kotlin.get())
+                } else if (requested.group.startsWith("org.jetbrains.compose")) {
+                    useVersion(libs.versions.compose.plugin.get())
+                }
+            }
+            // preferProjectModules的作用是优先使用项目中的模块，而不是从远程仓库中下载
+//            preferProjectModules()
+            /*  // cacheDynamic0VersionsFor的作用是缓存动态版本，避免每次构建都去下载
+              cacheDynamicVersionsFor(0, TimeUnit.SECONDS)
+              // cacheChangingModulesFor的作用是缓存变化的模块，避免每次构建都去下载
+              cacheChangingModulesFor(0, TimeUnit.SECONDS)
+              // failOnVersionConflict的作用是当版本冲突时，抛出异常
+  //            failOnVersionConflict()*/
+        }
+    }
+}
+
 val javaVersion = JavaVersion.toVersion(libs.versions.jvmTarget.get())
 check(JavaVersion.current().isCompatibleWith(javaVersion)) {
     "This project needs to be run with Java ${javaVersion.getMajorVersion()} or higher (found: ${JavaVersion.current()})."
