@@ -1,30 +1,30 @@
+@file:Suppress("UnstableApiUsage")
+
 /*
- * Copyright lt 2023
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *        http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
+* Copyright lt 2023
+*
+* Licensed under the Apache License, Version 2.0 (the "License");
+* you may not use this file except in compliance with the License.
+* You may obtain a copy of the License at
+*
+*        http://www.apache.org/licenses/LICENSE-2.0
+*
+* Unless required by applicable law or agreed to in writing, software
+* distributed under the License is distributed on an "AS IS" BASIS,
+* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+* See the License for the specific language governing permissions and
+* limitations under the License.
+*/
 rootProject.buildFileName = "build.gradle.kts"
 rootProject.name = "ComposeViews"
 
-include(":ComposeViews")
+include(":views")
 include(":common_app")
 include(":android_app")
 include("desktop_app")
 include("js_app")
 include("wasm_app")
 
-
-includeBuild("convention-plugins")
 
 pluginManagement {
     listOf(repositories, dependencyResolutionManagement.repositories).forEach {
@@ -85,40 +85,12 @@ pluginManagement {
             }
         }
     }
-
-    plugins {
-        val kotlinVersion = extra["kotlin.version"] as String
-        val composeVersion = extra["compose.version"] as String
-        val kspVersion = extra["ksp.version"] as String
-        val agpVersion = "8.5.1"
-
-        kotlin("jvm").version(kotlinVersion)
-        kotlin("multiplatform").version(kotlinVersion)
-        kotlin("android").version(kotlinVersion)
-        kotlin("plugin.compose").version(kotlinVersion)
-
-        id("com.android.application").version(agpVersion)
-        id("com.android.library").version(agpVersion)
-
-        id("org.jetbrains.compose").version(composeVersion)
-
-        id("com.google.devtools.ksp").version(kspVersion)
-
-        id("com.vk.vkompose") version "0.5.4-k2"
-    }
 }
 
 dependencyResolutionManagement {
     repositoriesMode.set(RepositoriesMode.PREFER_SETTINGS)
     repositories {
-        mavenCentral{
-            content {
-                excludeGroupByRegex("org.jogamp.*")
-                excludeGroupByRegex("com.vickyleu.*")
-                excludeGroupByRegex("org.jetbrains.compose.*")
-                excludeGroupByRegex("com.github.(?!johnrengelman|oshi|bumptech|mzule|pwittchen|filippudak|asyl|florent37).*")
-            }
-        }
+        mavenCentral()
         google {
             content {
                 excludeGroupByRegex("media.kamel.*")

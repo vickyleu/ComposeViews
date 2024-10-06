@@ -1,4 +1,6 @@
-@file:OptIn(ExperimentalKotlinGradlePluginApi::class)
+@file:OptIn(ExperimentalKotlinGradlePluginApi::class,
+    org.jetbrains.kotlin.gradle.ExperimentalWasmDsl::class
+)
 
 import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
@@ -22,33 +24,13 @@ import org.jetbrains.kotlin.gradle.targets.js.webpack.KotlinWebpackConfig
  */
 
 plugins {
-    kotlin("multiplatform")
-    kotlin("native.cocoapods")
-    id("org.jetbrains.compose")
-    id("com.android.library")
-    //id("maven-publish")
-    id("convention.publication")
-    kotlin("plugin.compose")
-    id("com.vk.vkompose")
+    alias(libs.plugins.kotlinMultiplatform)
+    alias(libs.plugins.android.library)
+    alias(libs.plugins.jetbrainsCompose)
+    alias(libs.plugins.compose.compiler)
+    alias(libs.plugins.kotlin.cocoapods)
 }
 
-if (vkomposeIsCheck)
-    vkompose {
-        skippabilityCheck = true
-
-        recompose {
-            isHighlighterEnabled = true
-            isLoggerEnabled = true
-        }
-
-        testTag {
-            isApplierEnabled = true
-            isDrawerEnabled = true
-            isCleanerEnabled = true
-        }
-
-        sourceInformationClean = true
-    }
 group = "com.vickyleu.composeviews"
 //group = "io.github.ltttttttttttt"
 //上传到mavenCentral命令: ./gradlew publishAllPublicationsToSonatypeRepository
@@ -58,7 +40,7 @@ version = "1.0.2"
 
 kotlin {
     applyDefaultHierarchyTemplate()
-
+    jvmToolchain(17)
     androidTarget {
         publishLibraryVariants("release")
     }
@@ -74,9 +56,7 @@ kotlin {
         iosArm64(),
         iosSimulatorArm64()
     ).forEach { iosTarget ->
-        //kotlin引入静态库参考: https://kotlinlang.org/docs/multiplatform-dsl-reference.html#cinterops
-        iosTarget.compilations.all {
-        }
+
     }
 
     js(IR) {
@@ -85,7 +65,6 @@ kotlin {
         }
     }
 
-    @OptIn(ExperimentalWasmDsl::class)
     wasmJs {
         moduleName = "ComposeViews"
         browser {
@@ -105,14 +84,12 @@ kotlin {
     cocoapods {
         summary = "Jatpack(JetBrains) Compose views"
         homepage = "https://github.com/ltttttttttttt/ComposeViews"
-        ios.deploymentTarget = "14.1"
+        ios.deploymentTarget = "12.1"
         podfile = project.file("../iosApp/Podfile")
         framework {
             baseName = "ComposeViews"
             isStatic = true
         }
-//        extraSpecAttributes["resources"] =
-//            "['resources/**']"
     }
 
     sourceSets {
@@ -125,7 +102,7 @@ kotlin {
                 api(compose.animation)
                 api(compose.ui)
                 implementation(compose.components.resources)
-                api("io.github.ltttttttttttt:DataStructure:1.1.4")
+                api(libs.datastructure)
             }
         }
         val commonTest by getting {
@@ -136,24 +113,21 @@ kotlin {
 
         val androidMain by getting {
             dependencies {
-                api("androidx.activity:activity-compose:1.4.0")
+                api(libs.androidx.activity.compose)
                 //协程
-                api("org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutinesVersion")
+                api(libs.kotlinx.coroutines.android)
             }
         }
         val androidUnitTest by getting {
             dependencies {
-                implementation("junit:junit:4.13")
+                implementation(libs.junit)
             }
         }
 
         val desktopMain by getting {
             dependencies {
-                //api(project(":ComposeViews")) {
-                //    exclude("org.jetbrains.kotlinx", "kotlinx-coroutines-android")//剔除安卓协程依赖
-                //}
                 //协程
-                api("org.jetbrains.kotlinx:kotlinx-coroutines-swing:$coroutinesVersion")
+                api(libs.kotlinx.coroutines.swing)
             }
         }
     }
@@ -190,5 +164,4 @@ compose {
         publicResClass = false
         packageOfResClass="io.github.ltttttttttttt.composeviews.generated.resources"
     }
-    //kotlinCompilerPlugin.set("androidx.compose.compiler:compiler:$composeCompilerVersion")
 }

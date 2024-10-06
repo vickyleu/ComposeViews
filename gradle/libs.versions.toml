@@ -1,0 +1,52 @@
+[versions]
+activityCompose = "1.9.2"
+agp = "8.7.0"
+appcompat = "1.7.0"
+coilCompose = "3.0.0-alpha10"
+constraintlayoutCompose = "1.0.1"
+coreKtx = "1.13.1"
+datastructure = "1.1.4"
+espressoCore = "3.6.1"
+junit = "4.13.2"
+junitVersion = "1.2.1"
+kotlinxCoroutinesSwing = "1.9.0"
+ksp = "2.0.20-1.0.24"
+compose-plugin = "1.7.0-rc01"
+kotlin = "2.0.20"
+jvmTarget = "17"
+dokka = "1.9.20"
+androidx-annotation = "1.8.2"
+jetpack-compose-bom = "2024.09.03"
+kotlinxDatetime = "0.6.0"
+lifecycleRuntimeKtx = "2.8.6"
+android-compileSdk = "34"
+android-minSdk = "28"
+android-targetSdk = "33"
+material = "1.12.0"
+uiTestJunit4 = "1.7.3"
+[libraries]
+androidx-activity-compose = { module = "androidx.activity:activity-compose", version.ref = "activityCompose" }
+androidx-appcompat = { module = "androidx.appcompat:appcompat", version.ref = "appcompat" }
+androidx-constraintlayout-compose = { module = "androidx.constraintlayout:constraintlayout-compose", version.ref = "constraintlayoutCompose" }
+androidx-core-ktx = { module = "androidx.core:core-ktx", version.ref = "coreKtx" }
+androidx-espresso-core = { module = "androidx.test.espresso:espresso-core", version.ref = "espressoCore" }
+androidx-junit = { module = "androidx.test.ext:junit", version.ref = "junitVersion" }
+androidx-lifecycle-runtime-ktx = { module = "androidx.lifecycle:lifecycle-runtime-ktx", version.ref = "lifecycleRuntimeKtx" }
+androidx-ui-test-junit4 = { module = "androidx.compose.ui:ui-test-junit4", version.ref = "uiTestJunit4" }
+coil-compose = { module = "io.coil-kt.coil3:coil-compose", version.ref = "coilCompose" }
+coil-network-ktor = { module = "io.coil-kt.coil3:coil-network-ktor3", version.ref = "coilCompose" }
+datastructure = { module = "io.github.ltttttttttttt:DataStructure", version.ref = "datastructure" }
+junit = { module = "junit:junit", version.ref = "junit" }
+kotlinx-coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "kotlinxCoroutinesSwing" }
+kotlinx-coroutines-swing = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-swing", version.ref = "kotlinxCoroutinesSwing" }
+material = { module = "com.google.android.material:material", version.ref = "material" }
+
+[plugins]
+ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
+android-library = { id = "com.android.library", version.ref = "agp" }
+android-application = { id = "com.android.application", version.ref = "agp" }
+kotlin-cocoapods = { id = "org.jetbrains.kotlin.native.cocoapods", version.ref = "kotlin" }
+jetbrainsCompose = { id = "org.jetbrains.compose", version.ref = "compose-plugin" }
+compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
+kotlinMultiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
+dokka = { id = "org.jetbrains.dokka", version.ref = "dokka" }

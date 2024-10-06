@@ -1,4 +1,6 @@
-@file:OptIn(ExperimentalKotlinGradlePluginApi::class)
+@file:OptIn(ExperimentalKotlinGradlePluginApi::class,
+    org.jetbrains.kotlin.gradle.ExperimentalWasmDsl::class
+)
 
 import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
@@ -23,32 +25,39 @@ import org.jetbrains.kotlin.gradle.targets.js.webpack.KotlinWebpackConfig
 
 
 plugins {
-    kotlin("multiplatform")
-    id("org.jetbrains.compose")
-    id("com.android.library")
-    id("com.google.devtools.ksp")
-    kotlin("native.cocoapods")
-    kotlin("plugin.compose")
-    id("com.vk.vkompose")
+    alias(libs.plugins.kotlinMultiplatform)
+    alias(libs.plugins.android.library)
+    alias(libs.plugins.jetbrainsCompose)
+    alias(libs.plugins.compose.compiler)
+    alias(libs.plugins.ksp)
+    alias(libs.plugins.kotlin.cocoapods)
+//
+//    kotlin("multiplatform")
+//    id("org.jetbrains.compose")
+//    id("com.android.library")
+//    id("com.google.devtools.ksp")
+//    kotlin("native.cocoapods")
+//    kotlin("plugin.compose")
+//    id("com.vk.vkompose")
 }
 
-if (vkomposeIsCheck)
-    vkompose {
-        skippabilityCheck = true
-
-        recompose {
-            isHighlighterEnabled = true
-            isLoggerEnabled = true
-        }
-
-        testTag {
-            isApplierEnabled = true
-            isDrawerEnabled = true
-            isCleanerEnabled = true
-        }
-
-        sourceInformationClean = true
-    }
+//if (vkomposeIsCheck)
+//    vkompose {
+//        skippabilityCheck = true
+//
+//        recompose {
+//            isHighlighterEnabled = true
+//            isLoggerEnabled = true
+//        }
+//
+//        testTag {
+//            isApplierEnabled = true
+//            isDrawerEnabled = true
+//            isCleanerEnabled = true
+//        }
+//
+//        sourceInformationClean = true
+//    }
 
 group = "com.vickyleu.composeviews"
 //group = "com.lt.ltttttttttttt"
@@ -85,7 +94,7 @@ compose {
 }
 kotlin {
     applyDefaultHierarchyTemplate()
-
+    jvmToolchain(17)
     androidTarget {
         compilerOptions{
             jvmTarget.set(JvmTarget.fromTarget("17"))
@@ -111,7 +120,6 @@ kotlin {
         browser()
     }
 
-    @OptIn(ExperimentalWasmDsl::class)
     wasmJs {
         moduleName = "common_app"
         browser {
@@ -164,12 +172,14 @@ kotlin {
         val commonMain by getting {
             kotlin.srcDir("build/generated/ksp/metadata/commonMain/kotlin")
             dependencies {
-                api(project(":ComposeViews"))
+                api(project(":views"))
                 api(compose.runtime)
                 api(compose.foundation)
                 api(compose.material)
                 api(compose.animation)
                 api(compose.ui)
+                api(libs.coil.compose)//coil图片加载
+                api(libs.coil.network.ktor)//图片网络请求引擎
                 implementation(compose.components.resources)//api不能生成Res?
             }
         }
@@ -181,37 +191,29 @@ kotlin {
 
         val androidMain by getting {
             dependencies {
-                implementation("androidx.activity:activity-compose:1.4.0")
-                implementation("androidx.appcompat:appcompat:1.2.0")
-                api("io.coil-kt.coil3:coil-compose:$coilVersion")//coil图片加载
-                api("io.coil-kt.coil3:coil-network-ktor:$coilVersion")//图片网络请求引擎
+                implementation(libs.androidx.activity.compose)
+                implementation(libs.androidx.appcompat)
             }
         }
         val androidUnitTest by getting {
             dependencies {
-                implementation("junit:junit:4.13.2")
+                implementation(libs.junit)
             }
         }
 
         val desktopMain by getting {
             dependencies {
                 api(compose.preview)
-                api("io.coil-kt.coil3:coil-compose:$coilVersion")//coil图片加载
-                api("io.coil-kt.coil3:coil-network-ktor:$coilVersion")//图片网络请求引擎
             }
         }
         val iosMain by getting {
             kotlin.srcDir("build/generated/ksp/ios/iosMain/kotlin")
             dependencies {
-                api("io.coil-kt.coil3:coil-compose:$coilVersion")//coil图片加载
-                api("io.coil-kt.coil3:coil-network-ktor:$coilVersion")//图片网络请求引擎
             }
         }
 
         val jsMain by getting {
             dependencies {
-                api("io.coil-kt.coil3:coil-compose:$coilVersion")//coil图片加载
-                api("io.coil-kt.coil3:coil-network-ktor:$coilVersion")//图片网络请求引擎
             }
         }
     }
