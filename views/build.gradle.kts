@@ -36,7 +36,7 @@ group = "com.vickyleu.composeviews"
 //上传到mavenCentral命令: ./gradlew publishAllPublicationsToSonatypeRepository
 //mavenCentral后台: https://s01.oss.sonatype.org/#stagingRepositories
 //version = "$composeVersion.1"
-version = "1.0.2"
+version = "1.0.3"
 
 kotlin {
     applyDefaultHierarchyTemplate()
@@ -99,6 +99,7 @@ kotlin {
                 api(compose.runtime)
                 api(compose.foundation)
                 api(compose.material)
+                implementation("org.jetbrains.compose.material:material-icons-core:1.7.3")
                 api(compose.animation)
                 api(compose.ui)
                 implementation(compose.components.resources)

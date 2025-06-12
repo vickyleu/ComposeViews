@@ -23,7 +23,7 @@ plugins {
 }
 
 group = "com.github.ltttttttttttt"
-version = "1.0.2"
+version = "1.0.3"
 kotlin {
     jvmToolchain(17)
     jvm("desktop") {

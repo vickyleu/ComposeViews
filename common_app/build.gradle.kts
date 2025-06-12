@@ -61,7 +61,7 @@ plugins {
 
 group = "com.vickyleu.composeviews"
 //group = "com.lt.ltttttttttttt"
-version = "1.0.2"
+version = "1.0.3"
 android {
     compileSdk = 33
     namespace = "com.lt.common_app"

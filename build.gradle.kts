@@ -46,7 +46,9 @@ subprojects{
                if (requested.group == "org.jetbrains.kotlin") {
                     useVersion(libs.versions.kotlin.get())
                 } else if (requested.group.startsWith("org.jetbrains.compose")) {
-                    useVersion(libs.versions.compose.plugin.get())
+                    if(requested.name.startsWith("material-icons-core").not()){
+                        useVersion(libs.versions.compose.plugin.get())
+                    }
                 }
             }
             // preferProjectModules的作用是优先使用项目中的模块，而不是从远程仓库中下载
@@ -110,7 +112,7 @@ allprojects {
 
     val mavenAuthor = "vickyleu"
     val mavenGroup = "com.$mavenAuthor.$rootProjectName"
-    val mVersion = "1.0.2"
+    val mVersion = "1.0.3"
     if (project.subprojects.isNotEmpty()) return@allprojects
     val currentName = project.name.replace("$rootProjectName-", "")
     if (rootProject.name == currentName) {
