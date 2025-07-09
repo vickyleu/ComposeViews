@@ -15,6 +15,7 @@
  */
 
 import org.jetbrains.compose.desktop.application.dsl.TargetFormat
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
@@ -27,9 +28,10 @@ version = "1.0.3"
 kotlin {
     jvmToolchain(17)
     jvm("desktop") {
-        compilations.all {
-            kotlinOptions.jvmTarget = "17"
+        compilerOptions{
+            jvmTarget.set(JvmTarget.fromTarget("17"))
         }
+
 //        withJava() //https://issuetracker.google.com/issues/248593403?hl=ko
     }
     sourceSets {

@@ -28,7 +28,7 @@ plugins {
 kotlin {
     jvmToolchain(17)
     wasmJs {
-        moduleName = "wasm_app"
+        outputModuleName = "wasm_app"
         browser {
             commonWebpackConfig {
                 outputFileName = "wasm_app.js"

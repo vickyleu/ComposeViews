@@ -66,7 +66,7 @@ kotlin {
     }
 
     wasmJs {
-        moduleName = "ComposeViews"
+        outputModuleName = "ComposeViews"
         browser {
             commonWebpackConfig {
                 outputFileName = "ComposeViews.js"
