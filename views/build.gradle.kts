@@ -1,11 +1,10 @@
+@file:Suppress("DEPRECATION")
 @file:OptIn(ExperimentalKotlinGradlePluginApi::class,
     org.jetbrains.kotlin.gradle.ExperimentalWasmDsl::class
 )
 
 import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
-import org.jetbrains.kotlin.gradle.targets.js.dsl.ExperimentalWasmDsl
-import org.jetbrains.kotlin.gradle.targets.js.webpack.KotlinWebpackConfig
 
 /*
  * Copyright lt 2023
@@ -31,12 +30,12 @@ plugins {
     alias(libs.plugins.kotlin.cocoapods)
 }
 
-group = "com.vickyleu.composeviews"
+group = "com.vickyleu.kmp.composeviews"
 //group = "io.github.ltttttttttttt"
 //上传到mavenCentral命令: ./gradlew publishAllPublicationsToSonatypeRepository
 //mavenCentral后台: https://s01.oss.sonatype.org/#stagingRepositories
 //version = "$composeVersion.1"
-version = "1.0.3"
+version = "2.0.0"
 
 kotlin {
     applyDefaultHierarchyTemplate()
@@ -70,12 +69,6 @@ kotlin {
         browser {
             commonWebpackConfig {
                 outputFileName = "ComposeViews.js"
-                devServer = (devServer ?: KotlinWebpackConfig.DevServer()).apply {
-                    static = (static ?: mutableListOf()).apply {
-                        // Serve sources to debug inside browser
-                        add(project.projectDir.path)
-                    }
-                }
             }
         }
         binaries.executable()
@@ -99,7 +92,7 @@ kotlin {
                 api(compose.runtime)
                 api(compose.foundation)
                 api(compose.material)
-                implementation("org.jetbrains.compose.material:material-icons-core:1.7.3")
+                implementation(compose.materialIconsExtended)
                 api(compose.animation)
                 api(compose.ui)
                 implementation(compose.components.resources)
@@ -135,24 +128,18 @@ kotlin {
 }
 
 android {
-    compileSdk = 34
+    compileSdk = libs.versions.android.compileSdk.get().toInt()
     namespace = "com.lt.compose_views"
     buildFeatures.buildConfig = true
     defaultConfig {
-        minSdk = 21
+        minSdk = libs.versions.android.minSdk.get().toInt()
         sourceSets["main"].manifest.srcFile("src/main/AndroidManifest.xml")
         consumerProguardFiles("consumer-rules.pro")
     }
     lint{
-        targetSdk = 31
+        targetSdk = libs.versions.android.targetSdk.get().toInt()
     }
 
-    publishing {
-        singleVariant("release"){
-            withJavadocJar()
-            withSourcesJar()
-        }
-    }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
@@ -164,77 +151,5 @@ compose {
     resources{
         publicResClass = false
         packageOfResClass="io.github.ltttttttttttt.composeviews.generated.resources"
-    }
-}
-
-afterEvaluate {
-    try {
-        tasks.findByName("signAndroidReleasePublication")!!
-            .mustRunAfter(tasks.findByName("publishAndroidDebugPublicationToSonatypeRepository"))
-        tasks.findByName("signIosArm64Publication")!!
-            .mustRunAfter(tasks.findByName("publishAndroidDebugPublicationToSonatypeRepository"))
-        tasks.findByName("signIosSimulatorArm64Publication")!!
-            .mustRunAfter(tasks.findByName("publishAndroidDebugPublicationToSonatypeRepository"))
-        tasks.findByName("signIosX64Publication")!!
-            .mustRunAfter(tasks.findByName("publishAndroidDebugPublicationToSonatypeRepository"))
-        tasks.findByName("signJsPublication")!!
-            .mustRunAfter(tasks.findByName("publishAndroidDebugPublicationToSonatypeRepository"))
-        tasks.findByName("signKotlinMultiplatformPublication")!!
-            .mustRunAfter(tasks.findByName("publishAndroidDebugPublicationToSonatypeRepository"))
-        tasks.findByName("signIosArm64Publication")!!
-            .mustRunAfter(tasks.findByName("publishAndroidReleasePublicationToSonatypeRepository"))
-        tasks.findByName("signIosSimulatorArm64Publication")!!
-            .mustRunAfter(tasks.findByName("publishIosArm64PublicationToSonatypeRepository"))
-        tasks.findByName("signIosSimulatorArm64Publication")!!
-            .mustRunAfter(tasks.findByName("publishAndroidReleasePublicationToSonatypeRepository"))
-        tasks.findByName("signIosX64Publication")!!
-            .mustRunAfter(tasks.findByName("publishIosArm64PublicationToSonatypeRepository"))
-        tasks.findByName("signIosX64Publication")!!
-            .mustRunAfter(tasks.findByName("publishAndroidReleasePublicationToSonatypeRepository"))
-        tasks.findByName("signJsPublication")!!
-            .mustRunAfter(tasks.findByName("publishIosArm64PublicationToSonatypeRepository"))
-        tasks.findByName("signJsPublication")!!
-            .mustRunAfter(tasks.findByName("publishAndroidReleasePublicationToSonatypeRepository"))
-        tasks.findByName("signKotlinMultiplatformPublication")!!
-            .mustRunAfter(tasks.findByName("publishIosArm64PublicationToSonatypeRepository"))
-        tasks.findByName("signKotlinMultiplatformPublication")!!
-            .mustRunAfter(tasks.findByName("publishAndroidReleasePublicationToSonatypeRepository"))
-        tasks.findByName("signIosX64Publication")!!
-            .mustRunAfter(tasks.findByName("publishIosSimulatorArm64PublicationToSonatypeRepository"))
-        tasks.findByName("signJsPublication")!!
-            .mustRunAfter(tasks.findByName("publishIosSimulatorArm64PublicationToSonatypeRepository"))
-        tasks.findByName("signKotlinMultiplatformPublication")!!
-            .mustRunAfter(tasks.findByName("publishIosSimulatorArm64PublicationToSonatypeRepository"))
-        tasks.findByName("signJsPublication")!!
-            .mustRunAfter(tasks.findByName("publishIosX64PublicationToSonatypeRepository"))
-        tasks.findByName("signKotlinMultiplatformPublication")!!
-            .mustRunAfter(tasks.findByName("publishIosX64PublicationToSonatypeRepository"))
-        tasks.findByName("signKotlinMultiplatformPublication")!!
-            .mustRunAfter(tasks.findByName("publishJsPublicationToSonatypeRepository"))
-        tasks.findByName("signWasmJsPublication")!!
-            .mustRunAfter(tasks.findByName("publishKotlinMultiplatformPublicationToSonatypeRepository"))
-        tasks.findByName("signWasmJsPublication")!!
-            .mustRunAfter(tasks.findByName("publishJsPublicationToSonatypeRepository"))
-        tasks.findByName("signWasmJsPublication")!!
-            .mustRunAfter(tasks.findByName("publishIosX64PublicationToSonatypeRepository"))
-        tasks.findByName("signWasmJsPublication")!!
-            .mustRunAfter(tasks.findByName("publishIosSimulatorArm64PublicationToSonatypeRepository"))
-        tasks.findByName("signAndroidDebugPublication")!!
-            .mustRunAfter(tasks.findByName("publishDesktopPublicationToSonatypeRepository"))
-        tasks.findByName("signAndroidReleasePublication")!!
-            .mustRunAfter(tasks.findByName("publishDesktopPublicationToSonatypeRepository"))
-        tasks.findByName("signIosArm64Publication")!!
-            .mustRunAfter(tasks.findByName("publishDesktopPublicationToSonatypeRepository"))
-        tasks.findByName("signIosSimulatorArm64Publication")!!
-            .mustRunAfter(tasks.findByName("publishDesktopPublicationToSonatypeRepository"))
-        tasks.findByName("signIosX64Publication")!!
-            .mustRunAfter(tasks.findByName("publishDesktopPublicationToSonatypeRepository"))
-        tasks.findByName("signJsPublication")!!
-            .mustRunAfter(tasks.findByName("publishDesktopPublicationToSonatypeRepository"))
-        tasks.findByName("signKotlinMultiplatformPublication")!!
-            .mustRunAfter(tasks.findByName("publishDesktopPublicationToSonatypeRepository"))
-        tasks.findByName("signWasmJsPublication")!!
-            .mustRunAfter(tasks.findByName("publishDesktopPublicationToSonatypeRepository"))
-    } catch (ignore: Exception) {
     }
 }

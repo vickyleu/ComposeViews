@@ -59,7 +59,7 @@ plugins {
 //        sourceInformationClean = true
 //    }
 
-group = "com.vickyleu.composeviews"
+group = "com.vickyleu.kmp.composeviews.sample"
 //group = "com.lt.ltttttttttttt"
 version = "1.0.3"
 android {

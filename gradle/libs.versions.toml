@@ -1,30 +1,31 @@
 [versions]
-activityCompose = "1.10.1"
-agp = "8.11.0"
-compose-plugin = "1.8.2"
-ksp = "2.2.0-2.0.2"
-kotlin = "2.2.0"
+vanniktech-maven-publish = "0.36.0"
+activityCompose = "1.13.0"
+agp = "8.13.2"
+compose-plugin = "1.10.3"
+ksp = "2.3.7"
+kotlin = "2.3.21"
 jvmTarget = "17"
-dokka = "2.0.0"
+dokka = "2.2.0"
 
 appcompat = "1.7.1"
-coilCompose = "3.2.0"
+coilCompose = "3.4.0"
 constraintlayoutCompose = "1.1.1"
-coreKtx = "1.16.0"
+coreKtx = "1.17.0"
 datastructure = "1.1.4"
 espressoCore = "3.6.1"
 junit = "4.13.2"
 junitVersion = "1.2.1"
 kotlinxCoroutinesSwing = "1.10.2"
 
-lifecycleRuntimeKtx = "2.9.1"
+lifecycleRuntimeKtx = "2.10.0"
 #noinspection GradleDependency
-android-compileSdk = "34"
+android-compileSdk = "36"
 android-minSdk = "28"
 #noinspection OldTargetApi
-android-targetSdk = "33"
+android-targetSdk = "36"
 material = "1.12.0"
-uiTestJunit4 = "1.8.3"
+uiTestJunit4 = "1.10.0"
 [libraries]
 androidx-activity-compose = { module = "androidx.activity:activity-compose", version.ref = "activityCompose" }
 androidx-appcompat = { module = "androidx.appcompat:appcompat", version.ref = "appcompat" }
@@ -42,7 +43,9 @@ kotlinx-coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutine
 kotlinx-coroutines-swing = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-swing", version.ref = "kotlinxCoroutinesSwing" }
 material = { module = "com.google.android.material:material", version.ref = "material" }
 
+
 [plugins]
+vanniktech-maven-publish = { id = "com.vanniktech.maven.publish", version.ref = "vanniktech-maven-publish" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 android-library = { id = "com.android.library", version.ref = "agp" }
 android-application = { id = "com.android.application", version.ref = "agp" }
